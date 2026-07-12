@@ -3,7 +3,8 @@ const cors = require("cors");
 
 const healthRoutes = require("./routes/health.routes");
 const authRoutes = require("./routes/auth.routes");
-const supabase = require("./config/supabase"); // 👈 Ye line add karo
+const urlRoutes = require("./routes/url.routes");
+const supabase = require("./config/supabase");
 
 const app = express();
 
@@ -11,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 👇 Temporary Test Route
+// Temporary Test Route
 app.get("/api/test-db", async (req, res) => {
   const { data, error } = await supabase
     .from("users")
@@ -23,5 +24,6 @@ app.get("/api/test-db", async (req, res) => {
 // Routes
 app.use("/api", healthRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/url", urlRoutes);
 
 module.exports = app;
