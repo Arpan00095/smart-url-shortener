@@ -14,6 +14,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "LinkNova API is running 🚀",
+  });
+});
+
+
 // Temporary Test Route
 app.get("/api/test-db", async (req, res) => {
   const { data, error } = await supabase
