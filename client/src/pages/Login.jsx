@@ -32,7 +32,7 @@ const Login = () => {
       // Agar backend user bhej raha hai to ye bhi save karenge
       // localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      navigate("/");
+      navigate("/dashboard");
 
     } catch (error) {
       alert(error.response?.data?.message || "Login Failed");
@@ -56,7 +56,7 @@ const Login = () => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
 
-        navigate("/");
+        navigate("/dashboard");
       }
     };
 
@@ -78,7 +78,7 @@ const Login = () => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
 
-        navigate("/");
+        navigate("/dashboard");
       }
     });
 
