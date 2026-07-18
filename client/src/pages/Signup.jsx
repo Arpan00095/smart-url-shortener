@@ -47,7 +47,7 @@ const Signup = () => {
 
           toast.success("Google Signup Successful");
 
-          navigate("/dashboard");
+          navigate("/");
 
         } catch (err) {
           console.log(err);
