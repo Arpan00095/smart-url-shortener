@@ -34,7 +34,7 @@ const FAQ = () => {
   const [open, setOpen] = useState(null);
 
   return (
-    <section className="py-28 bg-white">
+    <section className="py-28 bg-white dark:bg-slate-900 transition-colors duration-300">
 
       <div className="max-w-4xl mx-auto px-6">
 
@@ -44,11 +44,11 @@ const FAQ = () => {
             FAQ
           </span>
 
-          <h2 className="text-5xl font-bold mt-4">
+          <h2 className="text-5xl font-bold mt-4 text-slate-900 dark:text-white">
             Frequently Asked Questions
           </h2>
 
-          <p className="text-gray-500 mt-6 text-lg">
+          <p className="text-slate-600 dark:text-slate-400 mt-6 text-lg">
             Everything you need to know about LinkNova.
           </p>
 
@@ -60,17 +60,15 @@ const FAQ = () => {
 
             <div
               key={index}
-              className="border rounded-2xl overflow-hidden shadow-sm"
+              className="border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-sm bg-white dark:bg-slate-800"
             >
 
               <button
-                onClick={() =>
-                  setOpen(open === index ? null : index)
-                }
-                className="w-full flex justify-between items-center px-6 py-5 bg-white hover:bg-gray-50 transition"
+                onClick={() => setOpen(open === index ? null : index)}
+                className="w-full flex justify-between items-center px-6 py-5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition"
               >
 
-                <span className="font-semibold text-left">
+                <span className="font-semibold text-left text-slate-900 dark:text-white">
                   {faq.question}
                 </span>
 
@@ -78,6 +76,7 @@ const FAQ = () => {
                   animate={{
                     rotate: open === index ? 180 : 0,
                   }}
+                  className="text-slate-600 dark:text-slate-300"
                 >
                   <FaChevronDown />
                 </motion.div>
@@ -95,7 +94,7 @@ const FAQ = () => {
                     className="overflow-hidden"
                   >
 
-                    <div className="px-6 pb-6 text-gray-600 leading-8">
+                    <div className="px-6 pb-6 text-slate-600 dark:text-slate-400 leading-8">
 
                       {faq.answer}
 

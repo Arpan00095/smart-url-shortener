@@ -3,23 +3,23 @@ import { FaArrowRight } from "react-icons/fa";
 
 const CTA = () => {
   return (
-    <section className="py-28">
+    <section className="py-28 bg-white dark:bg-slate-900 transition-colors duration-300">
 
       <div className="max-w-7xl mx-auto px-6">
 
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: .8 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="rounded-[40px] bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-16 text-center shadow-2xl"
+          className="rounded-[40px] bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-8 md:p-16 text-center shadow-2xl"
         >
 
           <span className="bg-white/20 px-5 py-2 rounded-full text-sm font-semibold">
             🚀 START TODAY
           </span>
 
-          <h2 className="text-5xl font-bold mt-8">
+          <h2 className="text-4xl md:text-5xl font-bold mt-8">
             Ready to Shorten
             <br />
             Your First Link?

@@ -27,39 +27,56 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="py-28 bg-white">
+    <section className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-5 md:px-8">
 
+        {/* Heading */}
         <div className="text-center mb-16">
 
-          <span className="text-blue-600 font-semibold">
-            TESTIMONIALS
+          <span className="text-blue-600 font-semibold tracking-widest uppercase">
+            Testimonials
           </span>
 
-          <h2 className="text-5xl font-bold mt-4">
+          <h2 className="mt-4 text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white">
             Loved by Thousands
           </h2>
 
-          <p className="mt-6 text-gray-500 text-lg">
+          <p className="mt-6 text-lg text-slate-600 dark:text-slate-400">
             See what our users say about LinkNova.
           </p>
 
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        {/* Cards */}
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 
           {testimonials.map((item, index) => (
+
             <motion.div
               key={index}
               whileHover={{
-                y: -10,
+                y: -8,
                 scale: 1.03,
               }}
-              transition={{ duration: .3 }}
-              className="bg-white rounded-3xl border border-gray-200 shadow-lg p-8"
+              transition={{
+                duration: 0.25,
+              }}
+              className="
+                rounded-3xl
+                bg-white
+                dark:bg-slate-900
+                border
+                border-slate-200
+                dark:border-slate-800
+                shadow-lg
+                hover:shadow-2xl
+                p-8
+                transition
+              "
             >
 
+              {/* Rating */}
               <div className="flex gap-1 text-yellow-400 mb-6">
                 <FaStar />
                 <FaStar />
@@ -68,31 +85,36 @@ const Testimonials = () => {
                 <FaStar />
               </div>
 
-              <p className="text-gray-600 leading-8 italic">
+              {/* Review */}
+              <p className="italic leading-8 text-slate-600 dark:text-slate-400">
                 "{item.review}"
               </p>
 
+              {/* User */}
               <div className="flex items-center gap-4 mt-8">
 
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="w-14 h-14 rounded-full"
+                  className="w-14 h-14 rounded-full border-2 border-blue-500"
                 />
 
                 <div>
-                  <h4 className="font-bold">
+
+                  <h4 className="font-bold text-slate-900 dark:text-white">
                     {item.name}
                   </h4>
 
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
                     {item.role}
                   </p>
+
                 </div>
 
               </div>
 
             </motion.div>
+
           ))}
 
         </div>

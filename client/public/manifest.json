@@ -1,0 +1,16 @@
+{
+  "name": "LinkNova - Smart URL Shortener",
+  "short_name": "LinkNova",
+  "description": "Create short links, generate QR codes, and track advanced analytics with LinkNova.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
