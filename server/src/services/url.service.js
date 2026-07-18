@@ -37,6 +37,17 @@ const incrementClicks = async (id, currentClicks) => {
   return data[0];
 };
 
+const saveClickAnalytics = async (clickData) => {
+  const { data, error } = await supabase
+    .from("url_clicks")
+    .insert([clickData])
+    .select();
+
+  if (error) throw error;
+
+  return data[0];
+};
+
 const getMyUrls = async (userId) => {
   const { data, error } = await supabase
     .from("urls")
@@ -124,16 +135,60 @@ const getUrlByOriginalUrl = async (originalUrl, userId) => {
   return data;
 };
 
+const updateUrlPassword = async (id, password) => {
+  const { data, error } = await supabase
+    .from("urls")
+    .update({
+      password,
+    })
+    .eq("id", id)
+    .select();
+
+  if (error) throw error;
+
+  return data[0];
+};
+
+const updateUrlSettings = async (id, settings) => {
+  const { data, error } = await supabase
+    .from("urls")
+    .update(settings)
+    .eq("id", id)
+    .select();
+
+  if (error) throw error;
+
+  return data[0];
+};
+
+const getWeeklyAnalytics = async (userId) => {
+  const { data, error } = await supabase
+    .from("url_clicks")
+    .select(`
+      clicked_at,
+      urls!inner(user_id)
+    `)
+    .eq("urls.user_id", userId);
+
+  if (error) throw error;
+
+  return data;
+};
 
 module.exports = {
   createShortUrl,
   getUrlByShortCode,
   checkShortCodeExists,
   incrementClicks,
+  saveClickAnalytics,
   getMyUrls,
   getUrlStats,
   getUrlByOriginalUrl,
   getUrlById,
   deleteUrl,
   updateUrl,
+  updateUrlPassword,
+  saveClickAnalytics,
+  updateUrlSettings,
+  getWeeklyAnalytics,
 };

@@ -4,47 +4,61 @@ const jwt = require("jsonwebtoken");
 const {
   createUser,
   getUserByEmail,
+  getUserById,
+  updateUser,
+  updatePassword,
 } = require("../services/auth.service");
+
+const {
+  createNotification,
+} = require("../services/notifications.service");
 
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-  // Validation
-if (!name || !email || !password) {
-  return res.status(400).json({
-    success: false,
-    message: "All fields are required",
-  });
-}
+    // Validation
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
 
-// Check if email already exists
-const existingUser = await getUserByEmail(email);
+    // Check if email already exists
+    const existingUser = await getUserByEmail(email);
 
-if (existingUser) {
-  return res.status(409).json({
-    success: false,
-    message: "Email already registered",
-  });
-}
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: "Email already registered",
+      });
+    }
 
-// Password Hash
-const hashedPassword = await bcrypt.hash(password, 10);
-   // Save User
-const user = await createUser({
-  name,
-  email,
-  password: hashedPassword,
-});
+    // Password Hash
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // Save User
+    const user = await createUser({
+      name,
+      email,
+      password: hashedPassword,
+    });
 
-// Password ko response se remove karo
-const { password: _, ...userWithoutPassword } = user;
+    await createNotification({
+      user_id: user.id,
+      title: "Welcome to LinkNova 🎉",
+      message: "Your account has been created successfully.",
+      type: "success",
+    });
 
-return res.status(201).json({
-  success: true,
-  message: "User registered successfully",
-  user: userWithoutPassword,
-});
+    // Password ko response se remove karo
+    const { password: _, ...userWithoutPassword } = user;
+
+    return res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      user: userWithoutPassword,
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -103,6 +117,15 @@ const login = async (req, res) => {
     // Remove password
     const { password: _, ...userWithoutPassword } = user;
 
+    // Create Notification
+    await createNotification({
+      user_id: user.id,
+      title: "Welcome Back 👋",
+      message: "You have successfully logged in.",
+      type: "success",
+    });
+
+    // Send Response
     return res.status(200).json({
       success: true,
       message: "Login successful",
@@ -117,7 +140,134 @@ const login = async (req, res) => {
     });
   }
 };
+
+const googleLogin = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    // Check if user already exists
+    let user = await getUserByEmail(email);
+
+    // If not exists, create user
+    if (!user) {
+
+      const randomPassword = await bcrypt.hash(
+        Math.random().toString(36),
+        10
+      );
+
+      user = await createUser({
+        name: name || "Google User",
+        email,
+        password: randomPassword,
+      });
+
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    const { password, ...userWithoutPassword } = user;
+
+    return res.status(200).json({
+      success: true,
+      message: "Google Login Successful",
+      token,
+      user: userWithoutPassword,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getProfile = async (req, res) => {
+  try {
+    const user = await getUserById(req.user.id);
+
+    const { password, ...userWithoutPassword } = user;
+
+    res.json({
+      success: true,
+      data: userWithoutPassword,
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    const user = await updateUser(req.user.id, {
+      name,
+    });
+
+    const { password, ...userWithoutPassword } = user;
+
+    res.json({
+      success: true,
+      message: "Profile Updated",
+      data: userWithoutPassword,
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const changeUserPassword = async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await updatePassword(req.user.id, hashedPassword);
+
+    res.json({
+      success: true,
+      message: "Password Updated",
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 module.exports = {
   signup,
   login,
+  googleLogin,
+  getProfile,
+  updateProfile,
+  changeUserPassword
 };
