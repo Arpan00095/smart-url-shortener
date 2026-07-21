@@ -5,6 +5,7 @@ const healthRoutes = require("./routes/health.routes");
 const authRoutes = require("./routes/auth.routes");
 const urlRoutes = require("./routes/url.routes");
 const qrRoutes = require("./routes/qr.routes");
+const folderRoutes = require("./routes/folder.routes");
 const supabase = require("./config/supabase");
 const notificationRoutes = require("./routes/notification.routes");
 const notificationsRoutes = require("./routes/notifications.routes");
@@ -49,6 +50,7 @@ app.use("/api", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/url", urlRoutes);
 app.use("/api/qr", qrRoutes);
+app.use("/api/folder", folderRoutes);
 app.use("/api/notification-settings", notificationRoutes);
 app.use("/api/notifications", notificationsRoutes);
 // Redirect Route
