@@ -5,6 +5,7 @@ import ToolCards from "./ToolCards";
 import UrlShortener from "../tools/UrlShortener";
 import QRGenerator from "../tools/QRGenerator";
 import PasswordProtectedUrl from "../tools/PasswordProtectedUrl";
+import PasswordProtectedFolder from "../tools/PasswordProtectedFolder";
 
 const HeroLeft = ({ tools, activeTool, setActiveTool }) => {
   return (
@@ -60,6 +61,8 @@ const HeroLeft = ({ tools, activeTool, setActiveTool }) => {
         {activeTool === "qr" && <QRGenerator />}
 
         {activeTool === "password" && <PasswordProtectedUrl />}
+
+        {activeTool === "folder" && <PasswordProtectedFolder />}
 
       </div>
 

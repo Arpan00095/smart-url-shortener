@@ -1,9 +1,15 @@
+const bcrypt = require("bcrypt");
+
 const {
   createFolder,
   saveFolderFiles,
   getFolderByShortCode,
   getFolderFiles,
 } = require("../services/folder.service");
+
+const {
+  uploadFile,
+} = require("../services/storage.service");
 
 // Random Folder Code
 const generateShortCode = () => {
@@ -19,14 +25,71 @@ const generateShortCode = () => {
   return code;
 };
 
-// Create Folder
+// Create Protected Folder
 const createProtectedFolder = async (req, res) => {
   try {
-    return res.status(200).json({
-      success: true,
-      message: "Folder API Ready 🚀",
+    const { folder_name, password } = req.body;
+
+    if (!folder_name) {
+      return res.status(400).json({
+        success: false,
+        message: "Folder name is required",
+      });
+    }
+
+    if (!password) {
+      return res.status(400).json({
+        success: false,
+        message: "Password is required",
+      });
+    }
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Please upload at least one file",
+      });
+    }
+
+    const shortCode = generateShortCode();
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create Folder
+    const folder = await createFolder({
+      user_id: req.user.id,
+      folder_name,
+      short_code: shortCode,
+      password: hashedPassword,
     });
+
+    // Upload Files & Save Database
+    for (const file of req.files) {
+      const uploadedFile = await uploadFile(file, shortCode);
+
+      await saveFolderFiles({
+        folder_id: folder.id,
+        file_name: uploadedFile.file_name,
+        file_path: uploadedFile.file_path,
+        file_url: uploadedFile.file_url,
+        file_size: uploadedFile.file_size,
+        mime_type: uploadedFile.mime_type,
+      });
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: "Protected Folder Created Successfully",
+      data: {
+        ...folder,
+        total_files: req.files.length,
+        folder_url: `${process.env.SERVER_URL}/folder/${shortCode}`,
+      },
+    });
+
   } catch (error) {
+    console.error("Create Folder Error:", error);
+
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -34,14 +97,33 @@ const createProtectedFolder = async (req, res) => {
   }
 };
 
-// Get Folder
+// Get Protected Folder
 const getProtectedFolder = async (req, res) => {
   try {
+    const { shortCode } = req.params;
+
+    const folder = await getFolderByShortCode(shortCode);
+
+    if (!folder) {
+      return res.status(404).json({
+        success: false,
+        message: "Folder not found",
+      });
+    }
+
+    const files = await getFolderFiles(folder.id);
+
     return res.status(200).json({
       success: true,
-      message: "Get Folder API Ready 🚀",
+      data: {
+        folder,
+        files,
+      },
     });
+
   } catch (error) {
+    console.error("Get Folder Error:", error);
+
     return res.status(500).json({
       success: false,
       message: error.message,

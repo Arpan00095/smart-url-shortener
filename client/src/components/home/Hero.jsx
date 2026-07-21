@@ -9,6 +9,7 @@ import {
 import UrlShortener from "../tools/UrlShortener";
 import QRGenerator from "../tools/QRGenerator";
 import AnalyticsTool from "../tools/AnalyticsTool";
+import PasswordProtectedFolder from "../tools/PasswordProtectedFolder";
 import DashboardPreview from "./DashboardPreview";
 import ToolCards from "./ToolCards";
 import HeroLeft from "./HeroLeft";
@@ -37,6 +38,13 @@ const Hero = () => {
       description: "Create password protected short links.",
       icon: <FaLock className="text-5xl text-red-500 mb-4" />,
       active: "border-red-600 bg-red-50 dark:bg-slate-800",
+    },
+    {
+      id: "folder",
+      title: "Protected Folder",
+      description: "Upload multiple files inside a password protected folder.",
+      icon: <FaLock className="text-5xl text-green-600 mb-4" />,
+      active: "border-green-600 bg-green-50 dark:bg-slate-800",
     }
   ];
 
