@@ -11,23 +11,33 @@ const createFolder = async (folderData) => {
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 
   return data;
 };
 
 // ======================================================
-// Save Folder Files
+// Save Folder File
 // ======================================================
 
 const saveFolderFiles = async (fileData) => {
   const { data, error } = await supabase
     .from("folder_files")
-    .insert(fileData)
+    .insert({
+      folder_id: fileData.folder_id,
+      file_name: fileData.file_name,
+      file_path: fileData.file_path,
+      file_size: fileData.file_size,
+      mime_type: fileData.mime_type,
+    })
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 
   return data;
 };
@@ -43,28 +53,33 @@ const getFolderByShortCode = async (shortCode) => {
     .eq("short_code", shortCode)
     .single();
 
-  if (error) return null;
+  if (error) {
+    return null;
+  }
 
   return data;
 };
 
 // ======================================================
-// Get Files Of Folder
+// Get Folder Files
 // ======================================================
 
 const getFolderFiles = async (folderId) => {
   const { data, error } = await supabase
     .from("folder_files")
     .select("*")
-    .eq("folder_id", folderId);
+    .eq("folder_id", folderId)
+    .order("created_at", { ascending: true });
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 
   return data;
 };
 
 // ======================================================
-// Get Single File
+// Get File By ID
 // ======================================================
 
 const getFolderFileById = async (fileId) => {
@@ -74,7 +89,9 @@ const getFolderFileById = async (fileId) => {
     .eq("id", fileId)
     .single();
 
-  if (error) return null;
+  if (error) {
+    return null;
+  }
 
   return data;
 };

@@ -1,11 +1,13 @@
 const supabase = require("../config/supabase");
 
+const BUCKET_NAME = "folders";
+
 const uploadFile = async (file, folderCode) => {
-  const fileName = `${folderCode}/${Date.now()}-${file.originalname}`;
+  const filePath = `${folderCode}/${Date.now()}-${file.originalname}`;
 
   const { error } = await supabase.storage
-    .from("folders") // Bucket Name
-    .upload(fileName, file.buffer, {
+    .from(BUCKET_NAME)
+    .upload(filePath, file.buffer, {
       contentType: file.mimetype,
       upsert: false,
     });
@@ -14,19 +16,27 @@ const uploadFile = async (file, folderCode) => {
     throw new Error(error.message);
   }
 
-  const { data } = supabase.storage
-    .from("folders")
-    .getPublicUrl(fileName);
-
   return {
     file_name: file.originalname,
-    file_path: fileName,
-    file_url: data.publicUrl,
+    file_path: filePath,
     file_size: file.size,
     mime_type: file.mimetype,
   };
 };
 
+const createSignedUrl = async (filePath) => {
+  const { data, error } = await supabase.storage
+    .from(BUCKET_NAME)
+    .createSignedUrl(filePath, 60);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data.signedUrl;
+};
+
 module.exports = {
   uploadFile,
+  createSignedUrl,
 };

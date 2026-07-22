@@ -10,9 +10,13 @@ const {
 
 const {
   uploadFile,
+  createSignedUrl,
 } = require("../services/storage.service");
 
+// ======================================================
 // Generate Random Short Code
+// ======================================================
+
 const generateShortCode = () => {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -66,13 +70,14 @@ const createProtectedFolder = async (req, res) => {
       password: hashedPassword,
     });
 
+    // Upload Files
     for (const file of req.files) {
       const uploadedFile = await uploadFile(file, shortCode);
 
       await saveFolderFiles({
         folder_id: folder.id,
         file_name: uploadedFile.file_name,
-        file_url: uploadedFile.file_url,
+        file_path: uploadedFile.file_path,
         file_size: uploadedFile.file_size,
         mime_type: uploadedFile.mime_type,
       });
@@ -156,10 +161,7 @@ const verifyProtectedFolder = async (req, res) => {
       });
     }
 
-    const matched = await bcrypt.compare(
-      password,
-      folder.password
-    );
+    const matched = await bcrypt.compare(password, folder.password);
 
     if (!matched) {
       return res.status(401).json({
@@ -205,7 +207,9 @@ const downloadFolderFile = async (req, res) => {
       });
     }
 
-    return res.redirect(file.file_url);
+    const signedUrl = await createSignedUrl(file.file_path);
+
+    return res.redirect(signedUrl);
 
   } catch (error) {
     console.error("Download Error:", error);
