@@ -1,13 +1,7 @@
 import { motion } from "framer-motion";
-
 import ToolCards from "./ToolCards";
 
-import UrlShortener from "../tools/UrlShortener";
-import QRGenerator from "../tools/QRGenerator";
-import PasswordProtectedUrl from "../tools/PasswordProtectedUrl";
-import PasswordProtectedFolder from "../tools/PasswordProtectedFolder";
-
-const HeroLeft = ({ tools, activeTool, setActiveTool }) => {
+const HeroLeft = ({ tools }) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: -40 }}
@@ -36,7 +30,7 @@ const HeroLeft = ({ tools, activeTool, setActiveTool }) => {
       </h1>
 
       <p className="mt-6 text-slate-600 dark:text-slate-300 text-lg">
-        Shorten URLs, Generate QR Codes and View Analytics
+        Shorten URLs, Generate QR Codes, Secure Links and Protected Folders
         from one beautiful dashboard.
       </p>
 
@@ -46,41 +40,37 @@ const HeroLeft = ({ tools, activeTool, setActiveTool }) => {
           Smart Tools
         </h2>
 
-        <ToolCards
-          tools={tools}
-          activeTool={activeTool}
-          setActiveTool={setActiveTool}
-        />
-
-      </div>
-
-      <div className="mt-8">
-
-        {activeTool === "url" && <UrlShortener />}
-
-        {activeTool === "qr" && <QRGenerator />}
-
-        {activeTool === "password" && <PasswordProtectedUrl />}
-
-        {activeTool === "folder" && <PasswordProtectedFolder />}
+        <ToolCards tools={tools} />
 
       </div>
 
       <div className="flex gap-10 mt-12 flex-wrap">
 
         <div>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">10M+</h2>
-          <p className="text-slate-500 dark:text-slate-400">Links Created</p>
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+            10M+
+          </h2>
+          <p className="text-slate-500 dark:text-slate-400">
+            Links Created
+          </p>
         </div>
 
         <div>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">50K+</h2>
-          <p className="text-slate-500 dark:text-slate-400">Users</p>
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+            50K+
+          </h2>
+          <p className="text-slate-500 dark:text-slate-400">
+            Users
+          </p>
         </div>
 
         <div>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">99.9%</h2>
-          <p className="text-slate-500 dark:text-slate-400">Uptime</p>
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+            99.9%
+          </h2>
+          <p className="text-slate-500 dark:text-slate-400">
+            Uptime
+          </p>
         </div>
 
       </div>

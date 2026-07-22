@@ -13,6 +13,11 @@ import TermsConditions from "../pages/TermsConditions";
 import SystemStatus from "../pages/SystemStatus";
 import PrivacySecurity from "../pages/PrivacySecurity";
 
+import UrlShortenerPage from "../pages/UrlShortenerPage";
+import QRGeneratorPage from "../pages/QRGeneratorPage";
+import PasswordProtectedUrlPage from "../pages/PasswordProtectedUrlPage";
+import ProtectedFolderPage from "../pages/ProtectedFolderPage";
+
 import ProtectedRoute from "./ProtectedRoute";
 
 import RedirectPage from "../pages/RedirectPage";
@@ -23,14 +28,13 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
 
-        {/* Home Page */}
+        {/* Home */}
         <Route
           path="/"
           element={<Home />}
         />
 
-
-        {/* Auth Pages */}
+        {/* Authentication */}
         <Route
           path="/login"
           element={<Login />}
@@ -41,55 +45,69 @@ const AppRoutes = () => {
           element={<Signup />}
         />
 
-        {/* Contact Page */}
+        {/* Public Pages */}
         <Route
           path="/contact"
           element={<Contact />}
         />
 
-        {/* About Page */}
         <Route
           path="/about"
           element={<About />}
         />
 
-        {/* Help & Support Page */}
         <Route
           path="/help-support"
           element={<HelpSupport />}
         />
 
-        {/* Privacy Policy Page */}
         <Route
           path="/privacy-policy"
           element={<PrivacyPolicy />}
         />
 
-        {/* Privacy & Security Page */}
         <Route
           path="/privacy-security"
           element={<PrivacySecurity />}
         />
 
-        {/* Terms & Conditions Page */}
         <Route
           path="/terms-conditions"
           element={<TermsConditions />}
         />
 
-        {/* System Status Page */}
         <Route
           path="/status"
           element={<SystemStatus />}
         />
 
+        {/* Individual Tool Pages */}
 
-        {/* Protected URL Verify */}
+        <Route
+          path="/url-shortener"
+          element={<UrlShortenerPage />}
+        />
+
+        <Route
+          path="/qr-generator"
+          element={<QRGeneratorPage />}
+        />
+
+        <Route
+          path="/protected-url"
+          element={<PasswordProtectedUrlPage />}
+        />
+
+        <Route
+          path="/protected-folder"
+          element={<ProtectedFolderPage />}
+        />
+
+        {/* Password Protected URL */}
         <Route
           path="/protected/:shortCode"
           element={<VerifyProtectedUrl />}
         />
-
 
         {/* Dashboard */}
         <Route
@@ -101,15 +119,13 @@ const AppRoutes = () => {
           }
         />
 
-
-        {/* Short URL Redirect */}
+        {/* Redirect */}
         <Route
           path="/s/:shortCode"
           element={<RedirectPage />}
         />
 
-
-        {/* 404 Page */}
+        {/* 404 */}
         <Route
           path="*"
           element={<NotFound />}

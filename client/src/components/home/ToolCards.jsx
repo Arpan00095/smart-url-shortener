@@ -1,6 +1,9 @@
 import { FaChevronRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-const ToolCards = ({ tools, activeTool, setActiveTool }) => {
+const ToolCards = ({ tools }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
@@ -8,12 +11,8 @@ const ToolCards = ({ tools, activeTool, setActiveTool }) => {
 
         <div
           key={tool.id}
-          onClick={() => setActiveTool(tool.id)}
-          className={`group cursor-pointer rounded-2xl border p-5 transition-all duration-300 ${
-            activeTool === tool.id
-              ? "border-blue-600 bg-blue-50 dark:bg-slate-800 shadow-xl"
-              : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xl"
-          }`}
+          onClick={() => navigate(tool.link)}
+          className="group cursor-pointer rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 transition-all duration-300 hover:border-blue-500 hover:shadow-xl"
         >
 
           <div className="mb-4">
