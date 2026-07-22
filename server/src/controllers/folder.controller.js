@@ -82,7 +82,7 @@ const createProtectedFolder = async (req, res) => {
             data: {
                 ...folder,
                 total_files: req.files.length,
-                folder_url: `${process.env.SERVER_URL}/folder/${shortCode}`,
+               folder_url: `${req.protocol}://${req.get("host")}/folder/${shortCode}`,
             },
         });
 

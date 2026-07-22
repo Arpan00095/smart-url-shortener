@@ -22,6 +22,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import RedirectPage from "../pages/RedirectPage";
 import VerifyProtectedUrl from "../pages/VerifyProtectedUrl";
+import VerifyProtectedFolder from "../pages/VerifyProtectedFolder";
 
 const AppRoutes = () => {
   return (
@@ -107,6 +108,12 @@ const AppRoutes = () => {
         <Route
           path="/protected/:shortCode"
           element={<VerifyProtectedUrl />}
+        />
+
+        {/* Password Protected Folder */}
+        <Route
+          path="/folder/:shortCode"
+          element={<VerifyProtectedFolder />}
         />
 
         {/* Dashboard */}
