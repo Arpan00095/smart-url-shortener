@@ -6,6 +6,7 @@ const {
   getFolderByShortCode,
   getFolderFiles,
   getFolderFileById,
+  getMyFolders,
 } = require("../services/folder.service");
 
 const {
@@ -314,10 +315,35 @@ const downloadFolderAsZip = async (req, res) => {
   }
 };
 
+// ======================================================
+// Get My Protected Folders
+// ======================================================
+
+const myFolders = async (req, res) => {
+  try {
+    const folders = await getMyFolders(req.user.id);
+
+    return res.status(200).json({
+      success: true,
+      count: folders.length,
+      data: folders,
+    });
+
+  } catch (error) {
+    console.error("My Folders Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createProtectedFolder,
   getProtectedFolder,
   verifyProtectedFolder,
   downloadFolderFile,
   downloadFolderAsZip,
+  myFolders,
 };

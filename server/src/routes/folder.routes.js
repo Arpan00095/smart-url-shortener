@@ -11,6 +11,7 @@ const {
   verifyProtectedFolder,
   downloadFolderFile,
   downloadFolderAsZip,
+  myFolders,
 } = require("../controllers/folder.controller");
 
 // ======================================
@@ -21,6 +22,15 @@ router.post(
   verifyToken,
   uploadFolder.array("files", 50),
   createProtectedFolder
+);
+
+// ==============================
+// My Protected Folders
+// ==============================
+router.get(
+  "/my-folders",
+  verifyToken,
+  myFolders
 );
 
 // ======================================
