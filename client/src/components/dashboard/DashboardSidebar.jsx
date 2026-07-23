@@ -1,8 +1,9 @@
 import {
   FaHome,
   FaLink,
-  FaChartBar,
   FaQrcode,
+  FaFolder,
+  FaChartBar,
   FaCog,
   FaSignOutAlt,
   FaTimes,
@@ -26,7 +27,6 @@ const DashboardSidebar = ({
     }
   };
 
-  // Logout Function
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -36,9 +36,41 @@ const DashboardSidebar = ({
     navigate("/login");
   };
 
+  const menuItems = [
+    {
+      key: "dashboard",
+      label: "Dashboard",
+      icon: <FaHome />,
+    },
+    {
+      key: "links",
+      label: "My Links",
+      icon: <FaLink />,
+    },
+    {
+      key: "qr",
+      label: "QR Codes",
+      icon: <FaQrcode />,
+    },
+    {
+      key: "folders",
+      label: "Protected Folders",
+      icon: <FaFolder />,
+    },
+    {
+      key: "analytics",
+      label: "Analytics",
+      icon: <FaChartBar />,
+    },
+    {
+      key: "settings",
+      label: "Settings",
+      icon: <FaCog />,
+    },
+  ];
+
   return (
     <>
-      {/* Mobile Overlay */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
@@ -89,74 +121,29 @@ const DashboardSidebar = ({
           </button>
         </div>
 
-        {/* Menu */}
+        {/* Navigation */}
         <nav className="flex-1 px-5 py-8 space-y-3">
-          <button
-            onClick={() => handleMenuClick("dashboard")}
-            className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition ${
-              activeMenu === "dashboard"
-                ? "bg-blue-600 font-semibold"
-                : "hover:bg-slate-700 dark:hover:bg-slate-800"
-            }`}
-          >
-            <FaHome />
-            Dashboard
-          </button>
-
-          <button
-            onClick={() => handleMenuClick("links")}
-            className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition ${
-              activeMenu === "links"
-                ? "bg-blue-600 font-semibold"
-                : "hover:bg-slate-700 dark:hover:bg-slate-800"
-            }`}
-          >
-            <FaLink />
-            My Links
-          </button>
-
-          <button
-            onClick={() => handleMenuClick("analytics")}
-            className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition ${
-              activeMenu === "analytics"
-                ? "bg-blue-600 font-semibold"
-                : "hover:bg-slate-700 dark:hover:bg-slate-800"
-            }`}
-          >
-            <FaChartBar />
-            Analytics
-          </button>
-
-          <button
-            onClick={() => handleMenuClick("qr")}
-            className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition ${
-              activeMenu === "qr"
-                ? "bg-blue-600 font-semibold"
-                : "hover:bg-slate-700 dark:hover:bg-slate-800"
-            }`}
-          >
-            <FaQrcode />
-            QR Codes
-          </button>
-
-          <button
-            onClick={() => handleMenuClick("settings")}
-            className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition ${
-              activeMenu === "settings"
-                ? "bg-blue-600 font-semibold"
-                : "hover:bg-slate-700 dark:hover:bg-slate-800"
-            }`}
-          >
-            <FaCog />
-            Settings
-          </button>
+          {menuItems.map((item) => (
+            <button
+              key={item.key}
+              onClick={() => handleMenuClick(item.key)}
+              className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-200 ${
+                activeMenu === item.key
+                  ? "bg-blue-600 text-white font-semibold shadow-lg"
+                  : "hover:bg-slate-700 dark:hover:bg-slate-800"
+              }`}
+            >
+              <span className="text-lg">{item.icon}</span>
+              <span>{item.label}</span>
+            </button>
+          ))}
         </nav>
 
-        {/* Bottom */}
+        {/* Logout */}
         <div className="p-5 border-t border-slate-700 dark:border-slate-800">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 py-3 rounded-xl transition"
+            className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 py-3 rounded-xl transition-all duration-200"
           >
             <FaSignOutAlt />
             Logout

@@ -9,13 +9,14 @@ import UrlTable from "../components/dashboard/UrlTable";
 import QRTable from "../components/dashboard/QRTable";
 import Settings from "../components/dashboard/Settings";
 import DashboardAnalytics from "../components/dashboard/DashboardAnalytics";
+import ProtectedFolders from "../components/dashboard/ProtectedFolders";
 
 const Dashboard = () => {
 
   const location = useLocation();
   const [activeMenu, setActiveMenu] = useState(
-  location.state?.menu || "dashboard"
-);
+    location.state?.menu || "dashboard"
+  );
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [refresh, setRefresh] = useState(false);
@@ -34,10 +35,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-  if (location.state?.menu) {
-    setActiveMenu(location.state.menu);
-  }
-}, [location]);
+    if (location.state?.menu) {
+      setActiveMenu(location.state.menu);
+    }
+  }, [location]);
 
   useEffect(() => {
     const fetchWeeklyAnalytics = async () => {
@@ -112,6 +113,25 @@ const Dashboard = () => {
           </>
         )}
 
+        {activeMenu === "qr" && (
+          <>
+            <DashboardHeader />
+            <QRTable />
+          </>
+
+        )}
+
+        {activeMenu === "folders" && (
+          <>
+            <DashboardHeader />
+
+            <ProtectedFolders
+              refresh={refresh}
+              onRefresh={handleRefresh}
+            />
+          </>
+        )}
+
         {activeMenu === "analytics" && (
           <>
             <DashboardHeader />
@@ -120,13 +140,6 @@ const Dashboard = () => {
               refresh={refresh}
               weeklyData={weeklyData}
             />
-          </>
-        )}
-
-        {activeMenu === "qr" && (
-          <>
-            <DashboardHeader />
-            <QRTable />
           </>
         )}
 
