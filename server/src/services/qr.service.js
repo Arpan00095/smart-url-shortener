@@ -34,8 +34,23 @@ const deleteQR = async (id) => {
   return true;
 };
 
+const getQrCount = async (userId) => {
+  const { count, error } = await supabase
+    .from("qr_codes")
+    .select("*", {
+      count: "exact",
+      head: true,
+    })
+    .eq("user_id", userId);
+
+  if (error) throw new Error(error.message);
+
+  return count;
+};
+
 module.exports = {
   createQR,
   getMyQRs,
   deleteQR,
+  getQrCount,
 };

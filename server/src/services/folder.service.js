@@ -97,10 +97,25 @@ const getFolderFileById = async (fileId) => {
   return data;
 };
 
+const getFolderCount = async (userId) => {
+  const { count, error } = await supabase
+    .from("protected_folders")
+    .select("*", {
+      count: "exact",
+      head: true,
+    })
+    .eq("user_id", userId);
+
+  if (error) throw new Error(error.message);
+
+  return count;
+};
+
 module.exports = {
   createFolder,
   saveFolderFiles,
   getFolderByShortCode,
   getFolderFiles,
   getFolderFileById,
+  getFolderCount,
 };

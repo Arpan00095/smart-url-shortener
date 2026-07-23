@@ -21,6 +21,8 @@ const {
   deleteUrl,
   updateUrl,
 } = require("../services/url.service");
+const { getFolderCount } = require("../services/folder.service");
+const { getQrCount } = require("../services/qr.service");
 
 // Random 6-character short code
 const generateShortCode = () => {
@@ -389,6 +391,8 @@ const updateUrlById = async (req, res) => {
 const urlStats = async (req, res) => {
   try {
     const urls = await getUrlStats(req.user.id);
+    const totalFolders = await getFolderCount(req.user.id);
+    const totalQrCodes = await getQrCount(req.user.id);
 
     const totalUrls = urls.length;
 
@@ -409,6 +413,8 @@ const urlStats = async (req, res) => {
       data: {
         total_urls: totalUrls,
         total_clicks: totalClicks,
+        total_qr: totalQrCodes,
+        total_folders: totalFolders,
         most_clicked: mostClicked,
       },
     });

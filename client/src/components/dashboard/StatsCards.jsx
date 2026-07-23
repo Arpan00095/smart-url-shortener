@@ -8,12 +8,15 @@ import {
   FaMousePointer,
   FaQrcode,
   FaFire,
+  FaFolder,
 } from "react-icons/fa";
 
 const StatsCards = ({ refresh }) => {
   const [stats, setStats] = useState({
     total_urls: 0,
     total_clicks: 0,
+    total_qr: 0,
+    total_folders: 0,
     most_clicked: null,
   });
 
@@ -32,13 +35,13 @@ const StatsCards = ({ refresh }) => {
       });
 
       setStats(res.data.data);
-
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6">
 
       <StatsCard
         title="Total Links"
@@ -56,9 +59,16 @@ const StatsCards = ({ refresh }) => {
 
       <StatsCard
         title="QR Codes"
-        value="0"
+        value={stats.total_qr}
         icon={<FaQrcode />}
         color="bg-purple-600"
+      />
+
+      <StatsCard
+        title="Protected Folders"
+        value={stats.total_folders}
+        icon={<FaFolder />}
+        color="bg-yellow-500"
       />
 
       <StatsCard
