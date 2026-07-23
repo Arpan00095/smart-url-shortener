@@ -13,6 +13,10 @@ const {
   createSignedUrl,
 } = require("../services/storage.service");
 
+const archiver = require("archiver");
+const axios = require("axios");
+
+
 // ======================================================
 // Generate Random Short Code
 // ======================================================
@@ -225,9 +229,82 @@ const downloadFolderFile = async (req, res) => {
   }
 };
 
+
+// ======================================================
+// Download Complete Folder (ZIP)
+// ======================================================
+
+const downloadFolderAsZip = async (req, res) => {
+  try {
+    const { shortCode } = req.params;
+
+    const folder = await getFolderByShortCode(shortCode);
+
+    if (!folder) {
+      return res.status(404).json({
+        success: false,
+        message: "Folder not found",
+      });
+    }
+
+    const files = await getFolderFiles(folder.id);
+
+    if (!files.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No files found",
+      });
+    }
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${folder.folder_name}.zip"`
+    );
+
+    res.setHeader(
+      "Content-Type",
+      "application/zip"
+    );
+
+    const archive = archiver("zip", {
+      zlib: { level: 9 },
+    });
+
+    archive.pipe(res);
+
+    for (const file of files) {
+      const signedUrl = await createSignedUrl(
+        file.file_path,
+        file.file_name
+      );
+
+      const response = await axios({
+        url: signedUrl,
+        method: "GET",
+        responseType: "stream",
+      });
+
+      archive.append(response.data, {
+        name: file.file_name,
+      });
+    }
+
+    await archive.finalize();
+
+  } catch (error) {
+    console.error("ZIP Download Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createProtectedFolder,
   getProtectedFolder,
   verifyProtectedFolder,
   downloadFolderFile,
+  downloadFolderAsZip,
 };

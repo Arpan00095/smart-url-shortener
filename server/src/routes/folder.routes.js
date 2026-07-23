@@ -9,6 +9,7 @@ const {
   getProtectedFolder,
   verifyProtectedFolder,
   downloadFolderFile,
+  downloadFolderAsZip,
 } = require("../controllers/folder.controller");
 
 // ==============================
@@ -30,11 +31,19 @@ router.post(
 );
 
 // ==============================
-// Download File
+// Download Single File
 // ==============================
 router.get(
   "/download/:fileId",
   downloadFolderFile
+);
+
+// ==============================
+// Download Complete Folder (ZIP)
+// ==============================
+router.get(
+  "/download-all/:shortCode",
+  downloadFolderAsZip
 );
 
 // ==============================
