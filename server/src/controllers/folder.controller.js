@@ -208,7 +208,10 @@ const downloadFolderFile = async (req, res) => {
       });
     }
 
-    const signedUrl = await createSignedUrl(file.file_path);
+    const signedUrl = await createSignedUrl(
+      file.file_path,
+      file.file_name
+    );
 
     return res.redirect(signedUrl);
 
