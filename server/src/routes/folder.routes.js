@@ -3,6 +3,7 @@ const router = express.Router();
 
 const uploadFolder = require("../middleware/uploadFolder.middleware");
 const verifyToken = require("../middleware/auth.middleware");
+const verifyFolderToken = require("../middleware/verifyFolderToken.middleware");
 
 const {
   createProtectedFolder,
@@ -12,9 +13,9 @@ const {
   downloadFolderAsZip,
 } = require("../controllers/folder.controller");
 
-// ==============================
+// ======================================
 // Create Protected Folder
-// ==============================
+// ======================================
 router.post(
   "/",
   verifyToken,
@@ -22,33 +23,35 @@ router.post(
   createProtectedFolder
 );
 
-// ==============================
+// ======================================
 // Verify Folder Password
-// ==============================
+// ======================================
 router.post(
   "/verify",
   verifyProtectedFolder
 );
 
-// ==============================
-// Download Single File
-// ==============================
+// ======================================
+// Download Single File (Protected)
+// ======================================
 router.get(
   "/download/:fileId",
+  verifyFolderToken,
   downloadFolderFile
 );
 
-// ==============================
-// Download Complete Folder (ZIP)
-// ==============================
+// ======================================
+// Download Complete Folder ZIP (Protected)
+// ======================================
 router.get(
   "/download-all/:shortCode",
+  verifyFolderToken,
   downloadFolderAsZip
 );
 
-// ==============================
-// Get Folder By Short Code
-// ==============================
+// ======================================
+// Get Folder Information
+// ======================================
 router.get(
   "/:shortCode",
   getProtectedFolder

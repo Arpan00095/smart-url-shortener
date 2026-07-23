@@ -15,6 +15,7 @@ const {
 
 const archiver = require("archiver");
 const axios = require("axios");
+const jwt = require("jsonwebtoken");
 
 
 // ======================================================
@@ -179,10 +180,22 @@ const verifyProtectedFolder = async (req, res) => {
 
     delete folder.password;
 
+    const accessToken = jwt.sign(
+      {
+        folderId: folder.id,
+        shortCode: folder.short_code,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
     return res.status(200).json({
       success: true,
       folder,
       files,
+      accessToken,
     });
 
   } catch (error) {
