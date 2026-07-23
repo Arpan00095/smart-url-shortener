@@ -19,6 +19,7 @@ const uploadFile = async (file, folderCode) => {
   return {
     file_name: file.originalname,
     file_path: filePath,
+    file_url: filePath,
     file_size: file.size,
     mime_type: file.mimetype,
   };

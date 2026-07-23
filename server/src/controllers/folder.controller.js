@@ -78,6 +78,7 @@ const createProtectedFolder = async (req, res) => {
         folder_id: folder.id,
         file_name: uploadedFile.file_name,
         file_path: uploadedFile.file_path,
+        file_url: uploadedFile.file_path,
         file_size: uploadedFile.file_size,
         mime_type: uploadedFile.mime_type,
       });

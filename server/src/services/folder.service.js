@@ -29,6 +29,7 @@ const saveFolderFiles = async (fileData) => {
       folder_id: fileData.folder_id,
       file_name: fileData.file_name,
       file_path: fileData.file_path,
+      file_url: fileData.file_url,
       file_size: fileData.file_size,
       mime_type: fileData.mime_type,
     })
